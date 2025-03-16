@@ -63,6 +63,8 @@ loadAppOpenAd() {
       autoPlay: true,
       looping: false,
       showControls: false,
+      fullScreenByDefault: true,
+
     );
   }
 
