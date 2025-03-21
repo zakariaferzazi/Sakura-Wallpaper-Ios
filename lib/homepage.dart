@@ -107,37 +107,46 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  PreferredSize? _buildAppBar() {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(50),
-      child: AppBar(
-        actions: [
-          IconButton(
-            icon: Icon(Icons.favorite, color: Colors.white),
-            onPressed: () {
-              // Add refresh functionality
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          FavoritesScreen(favorites: favorites)));
-            },
-          ),
-        ],
-        backgroundColor: Colors.black,
-        centerTitle: true,
-        title: Center(
-          child: SizedBox(
-            height: 180,
-            child: Image.asset(
-              'assets/appbar.png',
-              height: 30,
-            ),
-          ),
+PreferredSize? _buildAppBar() {
+  return PreferredSize(
+    preferredSize: const Size.fromHeight(50),
+    child: AppBar(
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.favorite, color: Colors.white),
+          onPressed: () {
+            // Add refresh functionality
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        FavoritesScreen(favorites: favorites)));
+          },
         ),
+      ],
+      backgroundColor: Colors.black,
+      centerTitle: true,
+      title: LayoutBuilder(
+        builder: (context, constraints) {
+          // Get device width
+          double deviceWidth = MediaQuery.of(context).size.width;
+          
+          // Calculate responsive image width
+          // Smaller percentage for tablets, larger for phones
+          double imageWidth = deviceWidth < 600 ? 
+                       deviceWidth :    // iPhone or smaller devices
+                       deviceWidth * 0.25;    // iPad or larger devices
+          
+          return Image.asset(
+            'assets/appbar.png',
+            width: imageWidth,
+            fit: BoxFit.contain,
+          );
+        }
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildDrawer() {
     return Drawer(

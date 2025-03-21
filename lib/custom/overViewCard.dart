@@ -89,11 +89,12 @@ class _OverViewCardState extends State<OverViewCard> {
       
       // Remove loading dialog
       Navigator.of(context).pop();
-      
+      final box = context.findRenderObject() as RenderBox?;
       // Share the image file
       await Share.shareXFiles(
         [XFile(tempFile.path)],
         text: 'Save this image and set as wallpaper',
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
       );
       
       // Show instructions
@@ -138,17 +139,14 @@ class _OverViewCardState extends State<OverViewCard> {
             children: [
               Text('To set as wallpaper:'),
               SizedBox(height: 8),
-Text('1. Save the image to Files from the share sheet'),  
-Text('2. Open the Files app'),  
-Text('3. Find the saved image and tap on it'),  
+
+Text('1. Save image'),  
+Text('2. Open the Photos app'),  
+Text('3. Find and tap on the saved image'),  
 Text('4. Tap the share icon (box with arrow)'),  
-Text('5. Select "Save Image" to move it to the Photos app'),  
-Text('6. Open the Photos app'),  
-Text('7. Find and tap on the saved image'),  
-Text('8. Tap the share icon (box with arrow)'),  
-Text('9. Scroll and select "Use as Wallpaper"'),  
-Text('10. Adjust the image as needed'),  
-Text('11. Choose where to set it (Home, Lock, or Both)'),  
+Text('5. Scroll and select "Use as Wallpaper"'),  
+Text('6. Adjust the image as needed'),  
+Text('7. Choose where to set it (Home, Lock, or Both)'),  
 
             ],
           ),
@@ -281,30 +279,34 @@ Text('11. Choose where to set it (Home, Lock, or Both)'),
                 child: Row(
                   children: [
                     Spacer(),
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 15),
-                      height: 50,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blue),
-                        color: Colors.blueAccent,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: TextButton(
-                        onPressed: () async {
-                          AdInterstitial1.loadInterstialAd();
-                          AdInterstitial1.showInterstitialAd();
-                          _setWallpaper(context);
-                        },
-                        child: const Text(
-                          "Set as Wallpaper",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.white,
+                    Builder(
+                      builder: (context) {
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 15),
+                          height: 50,
+                          width: 150,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blue),
+                            color: Colors.blueAccent,
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        ),
-                      ),
+                          child: TextButton(
+                            onPressed: () async {
+                              AdInterstitial1.loadInterstialAd();
+                              AdInterstitial1.showInterstitialAd();
+                              _setWallpaper(context);
+                            },
+                            child: const Text(
+                              "Set as Wallpaper",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
                     ),
                     Spacer()
                   ],
